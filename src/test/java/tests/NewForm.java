@@ -4,7 +4,7 @@ import com.codeborne.selenide.Configuration;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
@@ -47,7 +47,7 @@ public class NewForm {
 
       $(".react-datepicker__day--015").click();
 
-      $("#subjectsInput").setValue("Biology");
+      $("#subjectsInput").setValue("Biology").pressEnter();
 
       $("#hobbies-checkbox-1").parent().click();
 
@@ -57,15 +57,35 @@ public class NewForm {
 
        $("#currentAddress").setValue("Some street 1");
 
-        $("#state").click();
+        $("#state").scrollIntoView(true).click();
         $(byText("NCR")).click();
 
-
-        $("#city").click();
+        $("#city").scrollIntoView(true).click();
         $(byText("Gurgaon")).click();
 
 
-       $("#submit").click();
+
+        $("#submit").click();
+
+        // After submitting
+        $("#example-modal-sizes-title-lg").shouldHave(text("Thanks for submitting the form")); // check modal appears
+
+        $(".table-responsive").shouldHave(
+                text("Viktoria Smith"),
+                text("smithV@gmail.com"),
+                text("Female"),
+                text("0447381234"),
+                text("15 May,1990"),
+                text("Biology"),
+                text("Sports"),
+                text("Screenshot_40.png"),
+                text("Some street 1"),
+                text("NCR Gurgaon")
+        );
+        $("#closeLargeModal").click();
+
+// Assert modal is closed
+        $(".modal-content").shouldNot(appear);
 //
 //        $("#output #firstName").shouldHave(text("Viktoria"));
 //        $("#output #lastName").shouldHave(text("Smith"));
